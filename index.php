@@ -1,4 +1,7 @@
 <?php
+$viewsDir = __DIR__ . '/views';
+set_include_path($viewsDir . PATH_SEPARATOR . get_include_path());
+
 $dbConfig = parse_ini_file('db.ini');
 $pdoOptions = [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
