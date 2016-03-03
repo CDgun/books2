@@ -1,7 +1,8 @@
 <?php
 $viewsDir = __DIR__ . '/views';
 $modelsDir = __DIR__. '/models';
-set_include_path($viewsDir . PATH_SEPARATOR . $modelsDir . PATH_SEPARATOR . get_include_path());
+$controllersDir = __DIR__. '/controllers';
+set_include_path($viewsDir . PATH_SEPARATOR . $modelsDir . PATH_SEPARATOR . $controllersDir . PATH_SEPARATOR .get_include_path());
 
 $dbConfig = parse_ini_file('db.ini');
 $pdoOptions = [
@@ -18,16 +19,13 @@ try {
     //  redirection vers une page pour afficher une erreur relative à la connexion
     die($exception->getMessage());
 }
-include('books.php');
 
-if(isset($_GET['id'])){
-    $id = intval($_GET['id']);
-    $data = getBook($id);
+$a = isset($_REQUEST['a'])?$_REQUEST['a']:'index';
+$e = isset($_REQUEST['e'])?$_REQUEST['e']:'books';
 
-}else {
-    $data = getBooks();
+include($e . 'controller.php');
 
-}
+$data = call_user_func($a);
 
 
 include('view.php');
