@@ -15,8 +15,19 @@ try {
     die($exception->getMessage());
 }
 
-$sqlBooks = 'SELECT * FROM books';
-$pdoSt = $cn->query($sqlBooks);
-$books = $pdoSt->fetchAll();
+if(isset($_GET['id'])){
+    $id = intval($_GET['id']);
+    $sqlBook = 'SELECT * FROM books WHERE id = :id';
+    $pdoSt = $cn->prepare($sqlBook);
+    $pdoSt->execute([':id' => $id]);
+    $book = $pdoSt->fetch();
+    $view = 'singlebook.php';
+}else {
+    $sqlBooks = 'SELECT * FROM books';
+    $pdoSt = $cn->query($sqlBooks);
+    $books = $pdoSt->fetchAll();
+    $view = 'allbooks.php';
+}
+
 
 include('view.php');
