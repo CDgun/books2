@@ -1,14 +1,14 @@
-<h1><?php echo $book->title; ?></h1>
+<h1><?php echo $data['book']->title; ?></h1>
 
-<?php if ($book->cover):?>
+<?php if ($data['book']->cover):?>
     <div class="cover">
-        <img src="<?php echo $book->cover ?>" alt="" />
+        <img src="<?php echo $data['book']->cover ?>" alt="" />
     </div>
 <?php endif; ?>
 
-<?php if ($book->summary):?>
+<?php if ($data['book']->summary):?>
     <div class="summary">
-        <?php echo $book->summary ?>
+        <?php echo $data['book']->summary ?>
     </div>
 <?php endif; ?>
 

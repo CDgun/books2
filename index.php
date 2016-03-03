@@ -1,6 +1,7 @@
 <?php
 $viewsDir = __DIR__ . '/views';
-set_include_path($viewsDir . PATH_SEPARATOR . get_include_path());
+$modelsDir = __DIR__. '/models';
+set_include_path($viewsDir . PATH_SEPARATOR . $modelsDir . PATH_SEPARATOR . get_include_path());
 
 $dbConfig = parse_ini_file('db.ini');
 $pdoOptions = [
@@ -17,19 +18,15 @@ try {
     //  redirection vers une page pour afficher une erreur relative à la connexion
     die($exception->getMessage());
 }
+include('books.php');
 
 if(isset($_GET['id'])){
     $id = intval($_GET['id']);
-    $sqlBook = 'SELECT * FROM books WHERE id = :id';
-    $pdoSt = $cn->prepare($sqlBook);
-    $pdoSt->execute([':id' => $id]);
-    $book = $pdoSt->fetch();
-    $view = 'singlebook.php';
+    $data = getBook($id);
+
 }else {
-    $sqlBooks = 'SELECT * FROM books';
-    $pdoSt = $cn->query($sqlBooks);
-    $books = $pdoSt->fetchAll();
-    $view = 'allbooks.php';
+    $data = getBooks();
+
 }
 
 
