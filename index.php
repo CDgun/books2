@@ -4,6 +4,10 @@ $modelsDir = __DIR__. '/models';
 $controllersDir = __DIR__. '/controllers';
 set_include_path($viewsDir . PATH_SEPARATOR . $modelsDir . PATH_SEPARATOR . $controllersDir . PATH_SEPARATOR .get_include_path());
 
+spl_autoload_register(function($class){
+    include($class.'.php');
+});
+
 $dbConfig = parse_ini_file('db.ini');
 $pdoOptions = [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
@@ -20,12 +24,20 @@ try {
     die($exception->getMessage());
 }
 
-$a = isset($_REQUEST['a'])?$_REQUEST['a']:'index';
-$e = isset($_REQUEST['e'])?$_REQUEST['e']:'books';
+include('routes.php');
+$defaultRoute = $routes['default'];
+$routeParts = explode('_', $defaultRoute);
+$a = isset($_REQUEST['a'])?$_REQUEST['a']: $routeParts[0];
+$e = isset($_REQUEST['e'])?$_REQUEST['e']: $routeParts[1];
 
-include($e . 'controller.php');
+if (!in_array($a.'_'.$e,$routes)) {
+    // redirection 404
+    die('ce que vous cherchez n\'est pas ici');
+}
 
-$data = call_user_func($a);
+$controller_name = ucfirst($e) . 'Controller';
+$controller = new $controller_name();
 
+$data = call_user_func([$controller,$a]);
 
 include('view.php');
