@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- tout codes d'affichages -->
 <html>
     <head>
         <meta charset="utf-8">
